@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
@@ -17,8 +16,23 @@
             <%= @text%>
         </div>
         <div>
-            <button>編集</button>
-            <button>削除</button>
+            <button id="editButton" type="button" onclick="editButton_Click(<%= @id %>)">編集</button>
+            <button id="deleteButton" type="button" onclick="deleteButton_Click(<%= @id %>)">削除</button>
         </div>
 </body>
+<script language="javascript" type="text/javascript">
+function editButton_Click(id) {
+    document.location.href = "../edit/" + id;
+}
+function deleteButton_Click(id) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("DELETE", ('../memo/' + id), false);
+    xhr.onreadystatechange = function () {
+        if(this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            document.location.href = "../list"
+        }
+    }
+    xhr.send();
+}
+</script>
 </html>

@@ -2,22 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
     <h1>メモアプリ</h1>
-    <form method="POST">
-        <div>
-            <label for="title">タイトル</label>
-            <input name="title" type="text"/>
-        </div>
-        <div>
-            <label for="text">内容</label>
-            <textarea name="text"></textarea>
-        </div>
-        <button>登録</button>
-    </form>
+    <div>
+        <label for="title">タイトル</label>
+        <input id="title" name="title" type="text" value="<%= @title %>"/>
+    </div>
+    <div>
+        <label for="text">内容</label>
+        <textarea id="text" name="text"><%= @text %></textarea>
+    </div>
+    <button type="button" onclick="Button_Click(<%= @id %>)">登録</button>
 </body>
+<script language="javascript" type="text/javascript">
+function Button_Click(id) {
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("PATCH", ('../edit/' + id), false);
+    xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function () {
+        if(this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            document.location.href = "../list";
+        }
+    }
+
+    let title = document.querySelector("#title").value;
+    let text = document.querySelector("#text").value;
+    let param = 'id=' + id + '&title=' + title + '&text=' + text;
+
+    xhr.send(param);
+}
+</script>
 </html>
