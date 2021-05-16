@@ -4,8 +4,6 @@ require 'json'
 require 'sinatra'
 require 'sinatra/reloader'
 
-DATASTORE = 'data/memo.json'
-
 not_found do
   erb :not_found
 end
