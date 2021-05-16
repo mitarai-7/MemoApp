@@ -1,23 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>メモアプリ</h1>
-    <button type="button" onclick="newButton_Click()">新規</button>
-    <% @memo_list.each do |x| %>
-    <li>
-        <a href='/memo/<%= x['id']%>'> <%= x['title'] %> </a>
-    </li>
-    <% end %>
-</body>
-<script language="javascript" type="text/javascript">
-function newButton_Click() {
-    document.location.href = "new";
-}
-
-</script>
-</html>
+<div class="container">
+    <header>
+        <a id="backButton" class="button-back" href="/new">+</a>
+        <div class="name">
+            Your Memo
+        </div>
+    </header>
+    <div class="main__list">
+        <ul>
+        <% @memo_list.each do |x| %>
+            <li>
+                <a href='/memo/<%= x['id']%>'> <%= x['memo_title'] %> </a>
+            </li>
+        <% end %>
+        </ul>
+    </div>
+</div>

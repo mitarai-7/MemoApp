@@ -1,22 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>メモアプリ</h1>
-    <form method="POST">
-        <div>
-            <label for="title">タイトル</label>
-            <input name="title" type="text" />
+<div class="container">
+    <header>
+        <a id="backButton" class="button-back" href="/list"><<</a>
+        <div class="name">
+            Your Memo
         </div>
-        <div>
-            <label for="text">内容</label>
-            <textarea name="text"></textarea>
+    </header>
+    <div class="main">
+        <form method="POST" name="new_memo">
+            <div class="title">
+                <input id="memo_title" name="memo_title" type="text"
+                class="title__text" placeholder="タイトル"/>
+            </div>
+            <hr />
+            <div>
+                <textarea id="memo_text" name="memo_text" rows=8
+                class="text" placeholder="メモ"></textarea>
+            </div>
+        </form>
+    </div>
+    <footer>
+        <div class="command">
+            <a id="addButton" class="button-primary" href="#" onclick="addButton_Click()">Add</a>
         </div>
-        <button>登録</button>
-    </form>
-</body>
-</html>
+    <footer>
+</div>

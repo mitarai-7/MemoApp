@@ -1,14 +1,21 @@
 # frozen_string_literal: true
 
+require 'json'
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
 
-set :public_folder, 'public'
+DATASTORE = 'data/memo.json'
+
+not_found do
+  erb :not_found
+end
+
+get '/' do
+  redirect to('/list')
+end
 
 get '/list' do
-  datastore = 'data/memo.json'
-  @memo_list = File.open(datastore, 'r') { |io| JSON.parse(io.read) } if File.readable?(datastore)
+  @memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) } if File.readable?(DATASTORE)
   erb :list
 end
 
@@ -17,59 +24,58 @@ get '/new' do
 end
 
 post '/new' do
-  datastore = 'data/memo.json'
   if File.writable?(datastore)
     memo_list = File.open(datastore, 'r') { |io| JSON.parse(io.read) }
-    index = memo_list.size - 1
-    params[:id] = ((memo_list[index])['id'].to_i + 1).to_s
+    if memo_list.empty?
+      params[:id] = '1'
+    else
+      index = memo_list.size - 1
+      params[:id] = ((memo_list[index])['id'].to_i + 1).to_s
+    end
     memo_list.push(params)
-    File.open(datastore, 'w') { |io| io.print JSON.generate(memo_list) }
+    File.open(DATASTORE, 'w') { |io| io.print JSON.generate(memo_list) }
   end
   redirect to('/list')
 end
 
 get '/memo/:id' do
-  datastore = 'data/memo.json'
-  if File.readable?(datastore)
-    memo_list = File.open(datastore, 'r') { |io| JSON.parse(io.read) }
+  if File.readable?(DATASTORE)
+    memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) }
     memo = memo_list.find { |x| x['id'] == params[:id] }
     @id = memo['id']
-    @title = memo['title']
-    @text = memo['text']
+    @title = memo['memo_title']
+    @text = memo['memo_text'].gsub(/\n/, '<br>')
   end
   erb :detail
 end
 
+delete '/memo/:id' do
+  if File.writable?(DATASTORE)
+    memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) }
+    memo_list.delete_if { |x| x['id'] == params[:id] }
+    File.open(DATASTORE, 'w') { |io| io.print JSON.generate(memo_list) }
+  end
+  200
+end
+
 get '/edit/:id' do
-  datastore = 'data/memo.json'
-  if File.readable?(datastore)
-    memo_list = File.open(datastore, 'r') { |io| JSON.parse(io.read) }
+  if File.readable?(DATASTORE)
+    memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) }
     memo = memo_list.find { |x| x['id'] == params[:id] }
     @id = memo['id']
-    @title = memo['title']
-    @text = memo['text']
+    @title = memo['memo_title']
+    @text = memo['memo_text']
   end
   erb :edit
 end
 
 patch '/edit/:id' do
-  datastore = 'data/memo.json'
-  if File.writable?(datastore)
-    memo_list = File.open(datastore, 'r') { |io| JSON.parse(io.read) }
+  if File.writable?(DATASTORE)
+    memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) }
     index = memo_list.find_index { |x| x['id'] == params[:id] }
-    (memo_list[index])['title'] = params[:title]
-    (memo_list[index])['text'] = params[:text]
-    File.open(datastore, 'w') { |io| io.print JSON.generate(memo_list) }
-  end
-  200
-end
-
-delete '/memo/:id' do
-  datastore = 'data/memo.json'
-  if File.writable?(datastore)
-    memo_list = File.open(datastore, 'r') { |io| JSON.parse(io.read) }
-    memo_list.delete_if { |x| x['id'] == params[:id] }
-    File.open(datastore, 'w') { |io| io.print JSON.generate(memo_list) }
+    (memo_list[index])['memo_title'] = params[:title]
+    (memo_list[index])['memo_text'] = params[:text]
+    File.open(DATASTORE, 'w') { |io| io.print JSON.generate(memo_list) }
   end
   200
 end

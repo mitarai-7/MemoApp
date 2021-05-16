@@ -1,39 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>メモアプリ</h1>
-    <div>
-        <label for="title">タイトル</label>
-        <input id="title" name="title" type="text" value="<%= @title %>"/>
+<div class="container">
+    <header>
+        <a id="backButton" class="button-back" href="/memo/<%= @id %>"><<</a>
+        <div class="name">
+            Your Memo
+        </div>
+    </header>
+    <div class="main">
+        <div  class="title">
+            <input id="memo_title" name="memo_title" type="text"
+                class="title__text" placeholder="タイトル"
+                value="<%= @title %>"/>
+        </div>
+        <hr />
+        <div >
+            <textarea id="memo_text" name="memo_text"  class="text" rows=8
+                placeholder="メモ"><%= @text %></textarea>
+        </div>
     </div>
-    <div>
-        <label for="text">内容</label>
-        <textarea id="text" name="text"><%= @text %></textarea>
-    </div>
-    <button type="button" onclick="Button_Click(<%= @id %>)">登録</button>
-</body>
-<script language="javascript" type="text/javascript">
-function Button_Click(id) {
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("PATCH", ('../edit/' + id), false);
-    xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function () {
-        if(this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            document.location.href = "../list";
-        }
-    }
-
-    let title = document.querySelector("#title").value;
-    let text = document.querySelector("#text").value;
-    let param = 'id=' + id + '&title=' + title + '&text=' + text;
-
-    xhr.send(param);
-}
-</script>
-</html>
+    <footer>
+        <div class="command">
+            <a id="regButton" class="button-primary" onclick="Button_Click(<%= @id %>)">OK</a>
+        </div>
+    </footer>
+</div>

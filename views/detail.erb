@@ -1,38 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>メモアプリ</h1>
-        <div>
-            <label for="title">タイトル</label>
-            <%= @title%>
+    <div class="container">
+        <header>
+            <a id="backButton" class="button-back" href="/list"><<</a>
+            <div class="name">
+                Your Memo
+            </div>
+        </header>
+        <div class="main">
+            <div class="title title__text">
+                <%= @title%>
+            </div>
+            <hr />
+            <div class="text">
+                <%= @text%>
+            </div>
         </div>
-        <div>
-            <label for="text">内容</label>
-            <%= @text%>
-        </div>
-        <div>
-            <button id="editButton" type="button" onclick="editButton_Click(<%= @id %>)">編集</button>
-            <button id="deleteButton" type="button" onclick="deleteButton_Click(<%= @id %>)">削除</button>
-        </div>
-</body>
-<script language="javascript" type="text/javascript">
-function editButton_Click(id) {
-    document.location.href = "../edit/" + id;
-}
-function deleteButton_Click(id) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("DELETE", ('../memo/' + id), false);
-    xhr.onreadystatechange = function () {
-        if(this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            document.location.href = "../list"
-        }
-    }
-    xhr.send();
-}
-</script>
-</html>
+        <footer>
+            <div class="command">
+                <a id="editButton" class="button-primary" href="../edit/<%= @id %>">Edit</a>
+                <a id="deleteButton"  class="button-primary" href="#" onclick="deleteButton_Click(<%= @id %>)">Delete</a>
+            </div>
+        </footer>
+    </div>
