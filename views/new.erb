@@ -1,26 +1,26 @@
 <div class="container">
     <header>
-        <a id="backButton" class="button-back" href="/list"><<</a>
+        <a class="button-back" href="./list"><<</a>
         <div class="name">
             Your Memo
         </div>
     </header>
     <div class="main">
-        <form method="POST" name="new_memo">
+        <form action="" method="POST" id="memo">
             <div class="title">
-                <input id="memo_title" name="memo_title" type="text"
-                class="title__text" placeholder="タイトル"/>
+                <input name="memo_title" type="text"
+                class="title__text" placeholder="タイトル" required="required"/>
             </div>
             <hr />
             <div>
-                <textarea id="memo_text" name="memo_text" rows=8
-                class="text" placeholder="メモ"></textarea>
+                <textarea name="memo_text" rows=8
+                class="text" placeholder="メモ" required="required"></textarea>
             </div>
         </form>
     </div>
     <footer>
         <div class="command">
-            <a id="addButton" class="button-primary" href="#" onclick="addButton_Click()">Add</a>
+            <button class="button-primary" type="submit" form="memo">Add</button>
         </div>
     <footer>
 </div>

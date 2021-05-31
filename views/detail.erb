@@ -1,11 +1,12 @@
-    <div class="container">
-        <header>
-            <a id="backButton" class="button-back" href="/list"><<</a>
-            <div class="name">
-                Your Memo
-            </div>
-        </header>
-        <div class="main">
+<div class="container">
+    <header>
+        <a class="button-back" href="./list"><<</a>
+        <div class="name">
+            Your Memo
+        </div>
+    </header>
+    <div class="main">
+        <form action="" method="POST" id="memo">
             <div class="title title__text">
                 <%= @title%>
             </div>
@@ -13,11 +14,13 @@
             <div class="text">
                 <%= @text%>
             </div>
-        </div>
-        <footer>
-            <div class="command">
-                <a id="editButton" class="button-primary" href="../edit/<%= @id %>">Edit</a>
-                <a id="deleteButton"  class="button-primary" href="#" onclick="deleteButton_Click(<%= @id %>)">Delete</a>
-            </div>
-        </footer>
+            <input type="hidden" name="_method" value="delete" />
+        </form>
     </div>
+    <footer>
+        <div class="command">
+            <a class="button-primary" href="./edit/<%= @id %>">Edit</a>
+            <button class="button-primary" type="submit" form="memo">Delete</button>
+        </div>
+    </footer>
+</div>

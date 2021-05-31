@@ -1,25 +1,27 @@
 <div class="container">
     <header>
-        <a id="backButton" class="button-back" href="/memo/<%= @id %>"><<</a>
+        <a class="button-back" href="/memo/<%= @id %>"><<</a>
         <div class="name">
             Your Memo
         </div>
     </header>
     <div class="main">
-        <div  class="title">
-            <input id="memo_title" name="memo_title" type="text"
-                class="title__text" placeholder="タイトル"
-                value="<%= @title %>"/>
-        </div>
-        <hr />
-        <div >
-            <textarea id="memo_text" name="memo_text"  class="text" rows=8
-                placeholder="メモ"><%= @text %></textarea>
-        </div>
+        <form action="" method="POST" id="memo">
+            <div class="title title__text">
+                <input name="memo_title" type="text"
+                    class="title__text" placeholder="タイトル" required="required" value="<%= @title %>" />
+            </div>
+            <hr />
+            <div class="text">
+                <textarea name="memo_text" rows=8
+                    class="text" placeholder="メモ" required="required"><%= @text %></textarea>
+            </div>
+            <input type="hidden" name="_method" value="patch" />
+        </form>
     </div>
     <footer>
         <div class="command">
-            <a id="regButton" class="button-primary" onclick="Button_Click(<%= @id %>)">OK</a>
+            <button class="button-primary" type="submit" form="memo">OK</button>
         </div>
     </footer>
 </div>

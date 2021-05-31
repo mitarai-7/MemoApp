@@ -10,4 +10,6 @@ File.open(DATASTORE, 'w') { |io| io.puts '[]' } unless File.exist?(DATASTORE)
 
 use Rack::Protection::EscapedParams
 
+enable :method_override
+
 run Sinatra::Application

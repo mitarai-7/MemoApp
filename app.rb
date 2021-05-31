@@ -9,31 +9,32 @@ not_found do
 end
 
 get '/' do
-  redirect to('/list')
+  redirect to('/memo/list')
 end
 
-get '/list' do
+get '/memo/list' do
   @memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) } if File.readable?(DATASTORE)
   erb :list
 end
 
-get '/new' do
+get '/memo/new' do
   erb :new
 end
 
-post '/new' do
-  if File.writable?(datastore)
-    memo_list = File.open(datastore, 'r') { |io| JSON.parse(io.read) }
+post '/memo/new' do
+  memo = { memo_title: params['memo_title'], memo_text: params['memo_text'] }
+  if File.writable?(DATASTORE)
+    memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) }
     if memo_list.empty?
-      params[:id] = '1'
+      memo[:id] = '1'
     else
       index = memo_list.size - 1
-      params[:id] = ((memo_list[index])['id'].to_i + 1).to_s
+      memo[:id] = ((memo_list[index])['id'].to_i + 1).to_s
     end
-    memo_list.push(params)
+    memo_list.push(memo)
     File.open(DATASTORE, 'w') { |io| io.print JSON.generate(memo_list) }
   end
-  redirect to('/list')
+  redirect to('/memo/list')
 end
 
 get '/memo/:id' do
@@ -53,10 +54,10 @@ delete '/memo/:id' do
     memo_list.delete_if { |x| x['id'] == params[:id] }
     File.open(DATASTORE, 'w') { |io| io.print JSON.generate(memo_list) }
   end
-  200
+  redirect to('/memo/list')
 end
 
-get '/edit/:id' do
+get '/memo/edit/:id' do
   if File.readable?(DATASTORE)
     memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) }
     memo = memo_list.find { |x| x['id'] == params[:id] }
@@ -67,13 +68,13 @@ get '/edit/:id' do
   erb :edit
 end
 
-patch '/edit/:id' do
+patch '/memo/edit/:id' do
   if File.writable?(DATASTORE)
     memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) }
     index = memo_list.find_index { |x| x['id'] == params[:id] }
-    (memo_list[index])['memo_title'] = params[:title]
-    (memo_list[index])['memo_text'] = params[:text]
+    (memo_list[index])['memo_title'] = params['memo_title']
+    (memo_list[index])['memo_text'] = params['memo_text']
     File.open(DATASTORE, 'w') { |io| io.print JSON.generate(memo_list) }
   end
-  200
+  redirect to('/memo/list')
 end
