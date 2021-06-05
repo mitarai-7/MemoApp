@@ -9,19 +9,19 @@ not_found do
 end
 
 get '/' do
-  redirect to('/memo/list')
+  redirect to('/memos')
 end
 
-get '/memo/list' do
+get '/memos' do
   @memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) } if File.readable?(DATASTORE)
   erb :list
 end
 
-get '/memo/new' do
+get '/memos/new' do
   erb :new
 end
 
-post '/memo/new' do
+post '/memos' do
   memo = { memo_title: params['memo_title'], memo_text: params['memo_text'] }
   if File.writable?(DATASTORE)
     memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) }
@@ -34,10 +34,10 @@ post '/memo/new' do
     memo_list.push(memo)
     File.open(DATASTORE, 'w') { |io| io.print JSON.generate(memo_list) }
   end
-  redirect to('/memo/list')
+  redirect to('/memos')
 end
 
-get '/memo/:id' do
+get '/memos/:id' do
   if File.readable?(DATASTORE)
     memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) }
     memo = memo_list.find { |x| x['id'] == params[:id] }
@@ -48,16 +48,16 @@ get '/memo/:id' do
   erb :detail
 end
 
-delete '/memo/:id' do
+delete '/memos/:id' do
   if File.writable?(DATASTORE)
     memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) }
     memo_list.delete_if { |x| x['id'] == params[:id] }
     File.open(DATASTORE, 'w') { |io| io.print JSON.generate(memo_list) }
   end
-  redirect to('/memo/list')
+  redirect to('/memos')
 end
 
-get '/memo/edit/:id' do
+get '/memos/:id/edit' do
   if File.readable?(DATASTORE)
     memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) }
     memo = memo_list.find { |x| x['id'] == params[:id] }
@@ -68,7 +68,7 @@ get '/memo/edit/:id' do
   erb :edit
 end
 
-patch '/memo/edit/:id' do
+patch '/memos/:id' do
   if File.writable?(DATASTORE)
     memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) }
     index = memo_list.find_index { |x| x['id'] == params[:id] }
@@ -76,5 +76,5 @@ patch '/memo/edit/:id' do
     (memo_list[index])['memo_text'] = params['memo_text']
     File.open(DATASTORE, 'w') { |io| io.print JSON.generate(memo_list) }
   end
-  redirect to('/memo/list')
+  redirect to('/memos')
 end
