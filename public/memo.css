@@ -1,0 +1,130 @@
+button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.container {
+    width: 640px;
+    margin-top: 10px;
+    margin: 0 auto;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .4);
+    border-radius: 3px;
+}
+
+header {
+    background-color: #009688;
+    color: #FFFFFF;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .4);
+    padding-left: 10px;
+    height: 64px;
+    text-align: center;
+}
+
+header > * {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 64px;
+}
+
+.main {
+    text-align: left;
+    padding: 0 10px;
+    color: #212121;
+    min-height: 200px;
+}
+
+.main__list {
+    min-height: 200px;
+}
+
+footer {
+    padding:0 10px;
+    height: 48px;
+}
+
+.command {
+    text-align: right;
+}
+
+.button-back {
+    float: left;
+    margin-top: 12px;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 50%;
+    border: solid 2px #FFF;
+    text-decoration: none;
+    color: #FFF;
+    font-weight: bold;
+    text-align: center;
+}
+
+.button-primary {
+    display: inline-block;
+    padding: 0.3em 1em;
+    text-decoration: none;
+    color: #009688;
+    background-color: #FFF;
+    border: solid 2px #009688;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.title {
+    margin-top: 8px;
+}
+
+.title__text {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.text {
+    font-size: 16px;
+}
+
+ul, ol {
+    padding: 0 0 0 0;
+    position: relative;
+}
+
+ul li, ol li {
+    margin-bottom: 4px;
+    line-height: 1.5;
+    padding: 0.5em;
+    list-style-type: none;
+}
+
+li a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #212121;
+}
+
+ul li:hover,ol li:hover{
+    background-color: #eee;
+    opacity: 0.75;
+}
+
+input, textarea {
+    border: none;
+    resize: none;
+    outline: none;
+    font-family: none;
+    padding: 0;
+    width: 100%;
+}
+
+
+hr {
+    color: #212121;
+}

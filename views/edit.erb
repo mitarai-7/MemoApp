@@ -1,0 +1,27 @@
+<div class="container">
+    <header>
+        <a class="button-back" href="/memos/<%= @id %>"><<</a>
+        <div class="name">
+            Your Memo
+        </div>
+    </header>
+    <div class="main">
+        <form action="/memos/<%= @id %>" method="POST" id="memo">
+            <div class="title title__text">
+                <input name="memo_title" type="text"
+                    class="title__text" placeholder="タイトル" required="required" value="<%= @title %>" />
+            </div>
+            <hr />
+            <div class="text">
+                <textarea name="memo_text" rows=8
+                    class="text" placeholder="メモ" required="required"><%= @text %></textarea>
+            </div>
+            <input type="hidden" name="_method" value="patch" />
+        </form>
+    </div>
+    <footer>
+        <div class="command">
+            <button class="button-primary" type="submit" form="memo">OK</button>
+        </div>
+    </footer>
+</div>
