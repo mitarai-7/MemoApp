@@ -31,6 +31,12 @@ class MemoRepository
   FROM memos;
   SQL
 
+  SQL_DELETE = <<-SQL
+  DELETE
+  FROM memos
+  WHERE id = $1;
+  SQL
+
   def initialize
     @conn = PG::Connection.new(dbname: 'memo')
     # sql = <<-SQL
@@ -44,11 +50,11 @@ class MemoRepository
     @conn.prepare('create', SQL_CREATE)
     @conn.prepare('read', SQL_READ)
     @conn.prepare('readall', SQL_READALL)
+    @conn.prepare('delete', SQL_DELETE)
   end
 
   def create
-    res = @conn.exec_prepared('create', %w[title text])
-    p res
+    @conn.exec_prepared('create', %w[title text])
   end
 
   def read(id = nil)
@@ -68,8 +74,13 @@ class MemoRepository
     end
     res
   end
+
+  def delete(id)
+    @conn.exec_prepared('delete', [id])
+  end
 end
 
 mr = MemoRepository.new
 # mr.create
-mr.read(1)
+# mr.delete(1)
+p mr.read
