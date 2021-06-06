@@ -9,7 +9,7 @@
         <ul>
         <% @memo_list.each do |x| %>
             <li>
-                <a href='/memos/<%= x['id']%>'> <%= x['memo_title'] %> </a>
+                <a href='/memos/<%= x[:id]%>'> <%= x[:memo_title] %> </a>
             </li>
         <% end %>
         </ul>
