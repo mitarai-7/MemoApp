@@ -3,6 +3,9 @@
 require 'json'
 require 'sinatra'
 require 'sinatra/reloader'
+require_relative './lib/memo_repository'
+
+mr = MemoRepository.new
 
 not_found do
   erb :not_found
@@ -13,7 +16,7 @@ get '/' do
 end
 
 get '/memos' do
-  @memo_list = File.open(DATASTORE, 'r') { |io| JSON.parse(io.read) } if File.readable?(DATASTORE)
+  @memo_list = mr.read
   erb :list
 end
 

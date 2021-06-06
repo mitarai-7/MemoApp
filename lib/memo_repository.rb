@@ -28,7 +28,8 @@ class MemoRepository
     id,
     title,
     text
-  FROM memos;
+  FROM memos
+  ORDER BY id;
   SQL
 
   SQL_UPDATE = <<-SQL
@@ -59,14 +60,6 @@ class MemoRepository
 
   def initialize
     @conn = PG::Connection.new(dbname: 'memo')
-    # sql = <<-SQL
-    #   CREATE TABLE memos (
-    #     id SERIAL PRIMARY KEY,
-    #     title VARCHAR(32),
-    #     text TEXT
-    #   );
-    # SQL
-    # @conn.exec(sql)
     @conn.prepare('create', SQL_CREATE)
     @conn.prepare('read', SQL_READ)
     @conn.prepare('readall', SQL_READALL)
@@ -83,13 +76,13 @@ class MemoRepository
     if id.nil?
       @conn.exec_prepared('readall') do |memos|
         memos.each do |memo|
-          res << { id: memo.values[0], title: memo.values[1], text: memo.values[2] }
+          res << { id: memo.values[0], memo_title: memo.values[1], memo_text: memo.values[2] }
         end
       end
     else
       @conn.exec_prepared('read', [id]) do |memos|
         memos.each do |memo|
-          res << { id: memo.values[0], title: memo.values[1], text: memo.values[2] }
+          res << { id: memo.values[0], memo_title: memo.values[1], memo_text: memo.values[2] }
         end
       end
     end
