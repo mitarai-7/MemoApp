@@ -31,10 +31,30 @@ class MemoRepository
   FROM memos;
   SQL
 
+  SQL_UPDATE = <<-SQL
+  UPDATE memos
+  SET
+    title = $2,
+    text = $3
+  WHERE id = $1;
+  SQL
+
   SQL_DELETE = <<-SQL
   DELETE
   FROM memos
   WHERE id = $1;
+  SQL
+
+  SQL_INITDATABASE = <<-SQL
+  CREATE DATABASE memoapp;
+  SQL
+
+  SQL_INITTABLE = <<-SQL
+  CREATE TABLE memos (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(32),
+    text TEXT
+  );
   SQL
 
   def initialize
@@ -50,11 +70,12 @@ class MemoRepository
     @conn.prepare('create', SQL_CREATE)
     @conn.prepare('read', SQL_READ)
     @conn.prepare('readall', SQL_READALL)
+    @conn.prepare('update', SQL_UPDATE)
     @conn.prepare('delete', SQL_DELETE)
   end
 
-  def create
-    @conn.exec_prepared('create', %w[title text])
+  def create(title, text)
+    @conn.exec_prepared('create', [title, text])
   end
 
   def read(id = nil)
@@ -75,6 +96,10 @@ class MemoRepository
     res
   end
 
+  def update(id, title, text)
+    @conn.exec_prepared('update', [id, title, text])
+  end
+
   def delete(id)
     @conn.exec_prepared('delete', [id])
   end
@@ -83,4 +108,4 @@ end
 mr = MemoRepository.new
 # mr.create
 # mr.delete(1)
-p mr.read
+mr.read
