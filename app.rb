@@ -46,7 +46,7 @@ get '/memos/:id/edit' do
   memo = mr.read(params[:id]).first
   @id = memo[:id]
   @title = memo[:memo_title]
-  @text = memo[:memo_text].gsub(/\n/, '<br>')
+  @text = memo[:memo_text]
   erb :edit
 end
 

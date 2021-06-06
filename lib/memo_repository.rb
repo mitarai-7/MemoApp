@@ -46,10 +46,6 @@ class MemoRepository
   WHERE id = $1;
   SQL
 
-  SQL_INITDATABASE = <<-SQL
-  CREATE DATABASE memoapp;
-  SQL
-
   SQL_INITTABLE = <<-SQL
   CREATE TABLE memos (
     id SERIAL PRIMARY KEY,
@@ -59,7 +55,15 @@ class MemoRepository
   SQL
 
   def initialize
-    @conn = PG::Connection.new(dbname: 'memo')
+    res = `psql -l | grep "memoapp"`
+    p res
+    `createdb memoapp` unless res.include?('memoapp ')
+
+    res = `psql memoapp -c "select * from pg_tables where tablename = 'memos'" | grep "memos"`
+    p res
+    `psql memoapp -c "#{SQL_INITTABLE}"` unless res.include?('memos ')
+
+    @conn = PG::Connection.new(dbname: 'memoapp')
     @conn.prepare('create', SQL_CREATE)
     @conn.prepare('read', SQL_READ)
     @conn.prepare('readall', SQL_READALL)
@@ -97,8 +101,3 @@ class MemoRepository
     @conn.exec_prepared('delete', [id])
   end
 end
-
-mr = MemoRepository.new
-# mr.create
-# mr.delete(1)
-mr.read
